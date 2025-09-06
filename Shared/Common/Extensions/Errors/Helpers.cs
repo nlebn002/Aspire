@@ -1,12 +1,12 @@
 ﻿using ErrorOr;
 using Microsoft.AspNetCore.Http;
 
-namespace Posts.Features.Shared.Errors;
+namespace Common.Extensions.Errors;
 
 public static class ErrorOrHttpResults
 {
     public static IResult ToResult<T>(this ErrorOr<T> result) =>
-        result.Match<IResult>(
+        result.Match(
             value => Results.Ok(value),
             errors => Results.Problem(
                 statusCode: MapToStatusCode(errors),

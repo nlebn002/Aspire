@@ -2,7 +2,7 @@
 
 namespace Posts.Features.Features.CreatePost;
 
-internal class CreatePostValidator : AbstractValidator<CreatePostCommand>
+public class CreatePostValidator : AbstractValidator<CreatePostCommand>
 {
     public CreatePostValidator()
     {

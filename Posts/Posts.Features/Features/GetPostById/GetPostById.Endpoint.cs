@@ -1,4 +1,5 @@
-﻿using ErrorOr;
+﻿using Common.Extensions.Errors;
+using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,6 @@ using Posts.Domain.Entities;
 using Posts.Features.Abstractions;
 using Posts.Features.Features.GetPostById;
 using Posts.Features.Shared.Dtos;
-using Posts.Features.Shared.Errors;
 using Posts.Features.Shared.Routes;
 
 public record GetPostByIdQuery(Guid Id) : IRequest<ErrorOr<PostDto>>;

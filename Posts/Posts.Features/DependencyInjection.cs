@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Common.Validation;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,8 +22,9 @@ public static class DependencyInjection
         });
 
         services.AddProblemDetails();
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Posts.Features.Behaviors.ValidationBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Posts.Features.Behaviors.LoggingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Posts.Features.Behaviors.LoggingBehavior<,>));
+
 
         return services;
     }
