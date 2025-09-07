@@ -20,13 +20,13 @@ internal class GetPostById : IApiEndpoint
         routeBuilder.MapGet(RouteConsts.GetPostById, Handle);
     }
 
-    private static async Task<IResult> Handle(
+    private static async Task<ErrorOr<PostDto>> Handle(
         [FromRoute] string postId,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
         var post = await mediator.Send(new GetPostByIdQuery(Guid.Parse(postId)), cancellationToken);
-        return post.ToResult();
+        return post;
     }
 }
 

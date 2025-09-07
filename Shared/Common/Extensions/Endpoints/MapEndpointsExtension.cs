@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Routing;
+﻿using Common.Filters;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Posts.Features.Abstractions;
@@ -26,10 +29,10 @@ public static class MapEndpointsExtension
     {
 
         var endpoints = serviceProvider.GetRequiredService<IEnumerable<IApiEndpoint>>();
-
+        var api = routeBuilder.MapGroup("").AddEndpointFilter<ErrorOrFilter>();
         foreach (var endpoint in endpoints)
         {
-            endpoint.MapEndpoint(routeBuilder);
+            endpoint.MapEndpoint(api);
         }
 
         return routeBuilder;

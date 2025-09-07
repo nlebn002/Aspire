@@ -19,10 +19,9 @@ public class CreatePost : IApiEndpoint
         routeBuilder.MapPost(RouteConsts.CreatePost, Handle);
     }
 
-    public async static Task<IResult> Handle([FromBody] CreatePostDto createPostDto, IMediator mediator)
+    public async static Task<ErrorOr<PostDto>> Handle([FromBody] CreatePostDto createPostDto, IMediator mediator)
     {
         var post = await mediator.Send(new CreatePostCommand(createPostDto.Title, createPostDto.Content));
-        
-        return post.ToResult();
+        return post;
     }
 }

@@ -1,4 +1,5 @@
-﻿using ErrorOr;
+﻿using Common.Exceptions;
+using ErrorOr;
 using FluentValidation;
 using MediatR;
 
@@ -28,7 +29,7 @@ namespace Common.Validation
                 a.GetGenericTypeDefinition() == typeof(ErrorOr<>);
 
             if (!isErrorOr)
-                throw new ValidationException(failures);
+                throw new InvalidTypeCustomException($"{nameof(ValidationBehavior<TRequest, TResult>)} failed. Returned type is not {nameof(IErrorOr)}");
 
             var errors = failures.Select(f => Error.Validation(f.PropertyName, f.ErrorMessage)).ToList();
             return (dynamic)errors;
