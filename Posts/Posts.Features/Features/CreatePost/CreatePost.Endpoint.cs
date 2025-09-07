@@ -1,8 +1,6 @@
-﻿using Common.Extensions.Errors;
-using ErrorOr;
+﻿using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Posts.Features.Abstractions;
