@@ -26,6 +26,7 @@ public static class DependencyInjection
         //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Posts.Features.Behaviors.LoggingBehavior<,>));
 
 
+
         return services;
     }
 }

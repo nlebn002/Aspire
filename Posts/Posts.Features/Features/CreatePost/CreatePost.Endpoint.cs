@@ -22,6 +22,7 @@ public class CreatePost : IApiEndpoint
     public async static Task<IResult> Handle([FromBody] CreatePostDto createPostDto, IMediator mediator)
     {
         var post = await mediator.Send(new CreatePostCommand(createPostDto.Title, createPostDto.Content));
+        
         return post.ToResult();
     }
 }
