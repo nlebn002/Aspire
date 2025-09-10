@@ -5,6 +5,9 @@ using Posts.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog((context, loggerConfig) =>
+    loggerConfig.ReadFrom.Configuration(context.Configuration));
+
 builder.Services.AddOpenApi();
 builder.Services.AddPostsInfrastructure(builder.Configuration);
 builder.Services.AddPostsServices(builder.Configuration);
