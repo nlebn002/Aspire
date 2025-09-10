@@ -10,8 +10,10 @@ public static class DependencyInjection
     public static IServiceCollection AddPostsInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var postgresConnectionString = configuration.GetConnectionString("postsDb");
-        services.AddDbContext<PostsDbContext>(x => x.UseNpgsql(postgresConnectionString));
-
+        services.AddDbContext<PostsDbContext>(x =>
+        {
+            x.UseNpgsql(postgresConnectionString);
+        });
         return services;
     }
 }
