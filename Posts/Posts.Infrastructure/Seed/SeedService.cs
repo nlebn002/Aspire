@@ -16,7 +16,7 @@ public class SeedService(PostsDbContext context, ILogger<SeedService> logger) : 
     {
         if (await context.Posts.AnyAsync(ct))
         {
-            logger.LogInformation("Database already seeded");
+            logger.LogInformation("Database has been already seeded");
             return;
         }
 

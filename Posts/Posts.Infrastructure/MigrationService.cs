@@ -17,9 +17,9 @@ public class MigrationService(PostsDbContext context, ILogger<MigrationService> 
         var pending = await context.Database.GetPendingMigrationsAsync();
         if (pending.Any())
         {
-            logger.LogInformation($"Applying {pending.Count()} pending migrations: {string.Join(", ", pending)}");
+            logger.LogInformation("Applying {MigrationCount} pending migrations: {Migrations}", pending.Count(), string.Join(", ", pending));
             await context.Database.MigrateAsync(ct);
-            logger.LogInformation($"Migrations have been applied");
+            logger.LogInformation("Migrations have been applied");
         }
     }
 }

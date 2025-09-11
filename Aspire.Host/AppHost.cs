@@ -1,29 +1,31 @@
 
 using Aspire.Hosting;
+using Microsoft.Extensions.Configuration;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
+{
+    ["ASPIRE_ALLOW_UNSECURED_TRANSPORT"] = "true" //allows aspire to start on http
+});
 
 //TODO use user secrets everywhere
 
-var pgUser = builder.AddParameter("pgUser", "admin");                    // not secret is fine
+var pgUser = builder.AddParameter("pgUser", "admin");     // not secret is fine
 var pgPass = builder.AddParameter("pgPassword", "admin"); // secret: true);
 
 var postgres = builder.AddPostgres("postgres", pgUser, pgPass, 5432)
-    //.WithEnvironment("POSTGRES_USER", "admin")
-    //.WithEnvironment("POSTGRES_PASSWORD", "admin")
     .WithDataBindMount("../data/postgres");
 
-//var postgres = builder.AddPostgres("postgres");
 
 var postsDb = postgres.AddDatabase("postsDb");
 
 var redisPass = builder.AddParameter("redisPassword", "admin"); ;
 var redis = builder.AddRedis("cache", 6379, redisPass)
     .WithDataBindMount("../data/redis");
-    //.WithEnvironment("REDIS_PASSWORD", "redis"));
 
-//var redis = builder.AddRedis("cache");
+var seq = builder.AddSeq("seq", 5341)
+    .WithDataBindMount("../data/seq");
 
 // kafka - 9092
 // Seq - 5341
@@ -31,8 +33,10 @@ var redis = builder.AddRedis("cache", 6379, redisPass)
 
 var api = builder.AddProject<Projects.Posts_Api>("posts-api")
     .WithReference(postsDb)
-    .WithReference(redis)
     .WaitFor(postgres)
-    .WaitFor(redis);
+    .WithReference(redis)
+    .WaitFor(redis)
+    .WithReference(seq)
+    .WaitFor(seq);
 
 builder.Build().Run();

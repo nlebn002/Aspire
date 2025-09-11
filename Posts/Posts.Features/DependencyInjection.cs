@@ -1,4 +1,5 @@
-﻿using Common.Validation;
+﻿using Common.PipelineBehaviors;
+using Common.Validation;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection)));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
         return services;
     }
