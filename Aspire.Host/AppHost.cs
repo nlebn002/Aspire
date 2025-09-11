@@ -21,7 +21,7 @@ var postgres = builder.AddPostgres("postgres", pgUser, pgPass, 5432)
 var postsDb = postgres.AddDatabase("postsDb");
 
 var redisPass = builder.AddParameter("redisPassword", "admin"); ;
-var redis = builder.AddRedis("cache", 6379, redisPass)
+var redis = builder.AddRedis("redis", 6379, redisPass)
     .WithDataBindMount("../data/redis");
 
 var seq = builder.AddSeq("seq", 5341)

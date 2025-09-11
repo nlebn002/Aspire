@@ -10,9 +10,19 @@ public static class DependencyInjection
     public static IServiceCollection AddPostsInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var postgresConnectionString = configuration.GetConnectionString("postsDb");
-        services.AddDbContext<PostsDbContext>(x =>
+        services.AddDbContext<PostsDbContext>(x =>x.UseNpgsql(postgresConnectionString));
+        services.AddHybridCache(o =>
         {
-            x.UseNpgsql(postgresConnectionString);
+            o.MaximumKeyLength = 1000;
+            o.DefaultEntryOptions = new()
+            {
+                Expiration = TimeSpan.FromMinutes(5),
+            };
+        });
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("redis");
+            options.InstanceName = "Posts.Redis";
         });
         return services;
     }

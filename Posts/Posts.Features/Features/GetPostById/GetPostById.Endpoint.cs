@@ -1,13 +1,9 @@
-﻿using Common.Extensions.Errors;
-using ErrorOr;
+﻿using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Posts.Domain.Entities;
 using Posts.Features.Abstractions;
-using Posts.Features.Features.GetPostById;
 using Posts.Features.Shared.Dtos;
 using Posts.Features.Shared.Routes;
 
