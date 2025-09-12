@@ -5,12 +5,9 @@ using Posts.Infrastructure;
 using Posts.Infrastructure.Seed;
 using Serilog;
 
-
-Serilog.Debugging.SelfLog.Enable(msg =>
-    Console.Error.WriteLine($"SERILOG ERROR: {msg}"));
-
-
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 builder.Host.UseSerilog((context, loggerConfig) =>
     loggerConfig
@@ -36,7 +33,6 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    var scope = app.Services.CreateScope();
 
     app.MapOpenApi();
     app.UseSwaggerUI(c =>
@@ -45,10 +41,13 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger";
     });
 
-    var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
-    var migrationService = scope.ServiceProvider.GetRequiredService<IMigrationService>();
-    await migrationService.MigrateAsync(default);
-    await seedService.SeedDataAsync(default);
+    using (var scope = app.Services.CreateScope())
+    {
+        var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
+        var migrationService = scope.ServiceProvider.GetRequiredService<IMigrationService>();
+        await migrationService.MigrateAsync(default);
+        await seedService.SeedDataAsync(default);
+    }
 }
 
 app.UseExceptionHandler();

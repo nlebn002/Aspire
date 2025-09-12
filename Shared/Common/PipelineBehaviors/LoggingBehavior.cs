@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ErrorOr;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Common.PipelineBehaviors
@@ -10,17 +11,29 @@ namespace Common.PipelineBehaviors
         {
             var requestName = typeof(TRequest).Name;
             logger.LogInformation("Handling {RequestName} with payload: {@Request}", requestName, request);
-            try
+
+            var response = await next();
+            if (response is IErrorOr errorOr)
             {
-                var response = await next();
-                logger.LogInformation("Handled {RequestName} with response: {@Response}", requestName, response);
-                return response;
+                if (errorOr.IsError)
+                {
+                    logger.LogWarning("Request {RequestName} failed with errors: {Errors}",
+                        typeof(TRequest).Name,
+                        string.Join(", ", errorOr.Errors.Select(e => e.Description)));
+                }
+                else
+                {
+                    logger.LogInformation("Request {RequestName} succeeded", typeof(TRequest).Name);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                logger.LogError(ex, "Error handling {RequestName} with payload {@Request}", requestName, request);
-                throw;
+                logger.LogInformation("Request {RequestName} returned {ResponseType}",
+                    typeof(TRequest).Name, typeof(TResponse).Name);
             }
+
+            return response;
         }
     }
 }
+
