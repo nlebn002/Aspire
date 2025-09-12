@@ -10,11 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.Host.UseSerilog((context, loggerConfig) =>
-    loggerConfig
-        .ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext()
-        .Enrich.WithMachineName()
-        .Enrich.WithThreadId());
+    loggerConfig.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddOpenApi();
 builder.Services.AddPostsInfrastructure(builder.Configuration);

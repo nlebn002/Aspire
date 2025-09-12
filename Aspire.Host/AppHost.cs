@@ -27,6 +27,10 @@ var redis = builder.AddRedis("redis", 6379, redisPass)
 var seq = builder.AddSeq("seq", 5341)
     .WithDataBindMount("../data/seq");
 
+//TODO implement after
+//var jaeger = builder.AddJaeger("jaeger", 6831)
+//    .WithDataBindMount("../data/jaeger");
+
 // kafka - 9092
 // Seq - 5341
 // jaeger - 16686

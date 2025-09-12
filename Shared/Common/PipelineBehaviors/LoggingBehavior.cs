@@ -13,7 +13,7 @@ namespace Common.PipelineBehaviors
             logger.LogInformation("Handling {RequestName} with payload: {@Request}", requestName, request);
 
             var response = await next();
-            if (response is IErrorOr errorOr)
+            if (response is IErrorOr errorOr) 
             {
                 if (errorOr.IsError)
                 {
