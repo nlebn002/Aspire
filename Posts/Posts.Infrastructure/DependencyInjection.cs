@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Posts.Features.Abstractions;
 using Posts.Infrastructure.Database;
 
 namespace Posts.Infrastructure;
@@ -12,6 +13,9 @@ public static class DependencyInjection
     {
         var postgresConnectionString = configuration.GetConnectionString("postsDb");
         services.AddDbContext<PostsDbContext>(x => x.UseNpgsql(postgresConnectionString));
+        services.AddScoped<IPostsDbContext, PostsDbContext>();
+        services.AddScoped<IUnitOfWork, EFUnitOfWork>();
+
         services.AddHybridCache(o =>
         {
             o.MaximumKeyLength = 1000;
@@ -20,6 +24,8 @@ public static class DependencyInjection
                 Expiration = TimeSpan.FromMinutes(5),
             };
         });
+
+
         services.AddStackExchangeRedisCache(options =>
         {
             options.Configuration = configuration.GetConnectionString("redis");

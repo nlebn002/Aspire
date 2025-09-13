@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Posts.Api.Extensions;
+using Posts.Features.Shared.Events;
 
 namespace Posts.Features;
 
@@ -18,6 +19,8 @@ public static class DependencyInjection
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection)));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
+        services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
 
         return services;
     }

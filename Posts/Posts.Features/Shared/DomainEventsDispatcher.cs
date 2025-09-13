@@ -1,10 +1,15 @@
 ﻿using MediatR;
 using Posts.Domain.Abstractions;
-using Posts.Infrastructure.Database;
+using Posts.Features.Abstractions;
 
 namespace Posts.Features.Shared.Events;
 
-public sealed class DomainEventsDispatcher(PostsDbContext dbContext, IMediator mediator)
+public interface IDomainEventsDispatcher
+{
+    Task DispatchEventsAsync(CancellationToken ct);
+}
+
+public sealed class DomainEventsDispatcher(IPostsDbContext dbContext, IMediator mediator) : IDomainEventsDispatcher
 {
     public async Task DispatchEventsAsync(CancellationToken ct)
     {
@@ -22,6 +27,10 @@ public sealed class DomainEventsDispatcher(PostsDbContext dbContext, IMediator m
             entity.ClearDomainEvents();
 
         foreach (var domainEvent in events)
-            await mediator.Publish(domainEvent, ct);
+        {
+            var notificationType = typeof(DomainEventNotification<>).MakeGenericType(domainEvent.GetType());
+            var notification = (INotification)Activator.CreateInstance(notificationType, domainEvent)!;
+            await mediator.Publish(notification, ct);
+        }
     }
 }

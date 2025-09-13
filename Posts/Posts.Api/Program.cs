@@ -18,6 +18,7 @@ builder.Services.AddPostsServices(builder.Configuration);
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddScoped<ISeedService, SeedService>();

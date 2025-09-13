@@ -2,13 +2,13 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
+using Posts.Features.Abstractions;
 using Posts.Features.Shared.Dtos;
 using Posts.Features.Shared.Errors;
-using Posts.Infrastructure.Database;
 
 namespace Posts.Features.Features.GetPostById;
 
-internal class GetPostByIdHandler(PostsDbContext db, HybridCache cache) : IRequestHandler<GetPostByIdQuery, ErrorOr<PostDto>>
+internal class GetPostByIdHandler(IPostsDbContext db, HybridCache cache) : IRequestHandler<GetPostByIdQuery, ErrorOr<PostDto>>
 {
     public async Task<ErrorOr<PostDto>> Handle(GetPostByIdQuery request, CancellationToken ct)
     {

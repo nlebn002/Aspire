@@ -3,7 +3,6 @@ using Common.Extensions.Errors;
 using ErrorOr;
 using Microsoft.AspNetCore.Http;
 using System.Reflection;
-using System.Security.Cryptography.Xml;
 
 namespace Common.Filters;
 
