@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Confluent.Kafka;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Posts.Infrastructure.Database;
@@ -10,7 +11,7 @@ public static class DependencyInjection
     public static IServiceCollection AddPostsInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var postgresConnectionString = configuration.GetConnectionString("postsDb");
-        services.AddDbContext<PostsDbContext>(x =>x.UseNpgsql(postgresConnectionString));
+        services.AddDbContext<PostsDbContext>(x => x.UseNpgsql(postgresConnectionString));
         services.AddHybridCache(o =>
         {
             o.MaximumKeyLength = 1000;
@@ -24,6 +25,13 @@ public static class DependencyInjection
             options.Configuration = configuration.GetConnectionString("redis");
             options.InstanceName = "Posts.Redis";
         });
+
+        services.AddSingleton<IProducer<Null, string>>(x =>
+        {
+            var kafkaProducerConfig = new ProducerConfig { BootstrapServers = configuration.GetConnectionString("kafka") };
+            return new ProducerBuilder<Null, string>(kafkaProducerConfig).Build();
+        });
+
         return services;
     }
 }

@@ -1,12 +1,13 @@
-﻿namespace Posts.Domain.Entities;
+﻿using Posts.Domain.Abstractions;
+using Posts.Domain.Events;
 
-public sealed class Post
+namespace Posts.Domain.Entities;
+
+public sealed class Post : AggregateRoot<Guid>
 {
-    public Guid Id { get; private set; }
-    public string Title { get; private set; }
-    public string Content { get; private set; }
-    public DateTime CreatedAtUtc { get; private set; }
-    public DateTime? UpdatedAtUtc { get; private set; }
+    public string Title { get; private set; } = null!;
+    public string Content { get; private set; } = null!;
+
 
     // Factory method (instead of public ctor, for enforcing invariants)
     private Post() { } // For EF Core
@@ -27,10 +28,13 @@ public sealed class Post
         if (string.IsNullOrWhiteSpace(content))
             throw new ArgumentException("Content cannot be empty", nameof(content));
 
-        return new Post(Guid.NewGuid(), title, content);
+        var post = new Post(Guid.NewGuid(), title, content);
+
+        post.AddDomainEvent(new PostCreatedDomainEvent(post));
+
+        return post;
     }
 
-    // Domain behavior
     public void Update(string title, string content)
     {
         if (string.IsNullOrWhiteSpace(title))
@@ -42,5 +46,7 @@ public sealed class Post
         Title = title;
         Content = content;
         UpdatedAtUtc = DateTime.UtcNow;
+
+        AddDomainEvent(new PostUpdatedDomainEvent(this));
     }
 }

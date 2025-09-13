@@ -6,7 +6,7 @@ using Posts.Infrastructure.Database;
 
 namespace Posts.Features.Features.CreatePost;
 
-public class CreatePostHandler(PostsDbContext db) : IRequestHandler<CreatePostCommand, ErrorOr<PostDto>>
+public class CreatePostHandler(PostsDbContext db, IMediator mediator) : IRequestHandler<CreatePostCommand, ErrorOr<PostDto>>
 {
     public async Task<ErrorOr<PostDto>> Handle(
         CreatePostCommand request,
@@ -15,6 +15,8 @@ public class CreatePostHandler(PostsDbContext db) : IRequestHandler<CreatePostCo
         var post = Post.Create(request.Title, request.Content);
         db.Add(post);
         await db.SaveChangesAsync(cancellationToken);
+
+
         return post.ToDto();
     }
 }

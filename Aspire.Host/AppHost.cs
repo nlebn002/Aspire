@@ -27,12 +27,17 @@ var redis = builder.AddRedis("redis", 6379, redisPass)
 var seq = builder.AddSeq("seq", 5341)
     .WithDataBindMount("../data/seq");
 
+
+var kafka = builder.AddKafka("kafka", 9092)
+    .WithKafkaUI()
+    .WithDataBindMount("../data/kafka");
+
+//OpenTelementry --> Jaeger (distributed tracing), Grafana + Prometheus (metrics + dashboard), Seq (structured logging)
+
 //TODO implement after
 //var jaeger = builder.AddJaeger("jaeger", 6831)
 //    .WithDataBindMount("../data/jaeger");
 
-// kafka - 9092
-// Seq - 5341
 // jaeger - 16686
 
 var api = builder.AddProject<Projects.Posts_Api>("posts-api")
@@ -41,6 +46,8 @@ var api = builder.AddProject<Projects.Posts_Api>("posts-api")
     .WithReference(redis)
     .WaitFor(redis)
     .WithReference(seq)
-    .WaitFor(seq);
+    .WaitFor(seq)
+    .WithReference(kafka)
+    .WaitFor(kafka);
 
 builder.Build().Run();
