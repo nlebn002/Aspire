@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Posts.Domain.Entities;
 
-namespace Posts.Features.Abstractions;
+namespace Posts.Features.Persistence;
 
 public interface IPostsDbContext
 {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Posts.Features.Abstractions;
+using Posts.Features.Persistence;
 using Posts.Infrastructure.Database;
 
 namespace Posts.Infrastructure;

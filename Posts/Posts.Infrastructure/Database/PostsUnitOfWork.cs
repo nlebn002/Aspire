@@ -1,4 +1,4 @@
-﻿using Posts.Features.Abstractions;
+﻿using Posts.Features.Persistence;
 using Posts.Features.Shared.Events;
 
 namespace Posts.Infrastructure.Database;

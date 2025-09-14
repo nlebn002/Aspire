@@ -1,13 +1,8 @@
 ﻿using MediatR;
 using Posts.Domain.Abstractions;
-using Posts.Features.Abstractions;
+using Posts.Features.Persistence;
 
 namespace Posts.Features.Shared.Events;
-
-public interface IDomainEventsDispatcher
-{
-    Task DispatchEventsAsync(CancellationToken ct);
-}
 
 public sealed class DomainEventsDispatcher(IPostsDbContext dbContext, IMediator mediator) : IDomainEventsDispatcher
 {

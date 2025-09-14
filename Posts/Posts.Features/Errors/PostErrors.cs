@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 
-namespace Posts.Features.Shared.Errors;
+namespace Posts.Features.Errors;
 
 internal static class PostErrors
 {

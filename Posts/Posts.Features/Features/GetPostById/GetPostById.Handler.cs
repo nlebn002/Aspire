@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
-using Posts.Features.Abstractions;
-using Posts.Features.Shared.Errors;
+using Posts.Features.Errors;
+using Posts.Features.Persistence;
 using Shared.Contracts.Posts;
 
 namespace Posts.Features.Features.GetPostById;

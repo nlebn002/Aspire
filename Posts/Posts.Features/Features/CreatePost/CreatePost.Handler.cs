@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Posts.Domain.Entities;
-using Posts.Features.Abstractions;
+using Posts.Features.Persistence;
 using Shared.Contracts.Posts;
 
 namespace Posts.Features.Features.CreatePost;

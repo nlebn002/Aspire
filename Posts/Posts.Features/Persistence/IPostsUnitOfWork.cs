@@ -1,4 +1,4 @@
-﻿namespace Posts.Features.Abstractions;
+﻿namespace Posts.Features.Persistence;
 
 public interface IPostsUnitOfWork
 {

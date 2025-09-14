@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Posts.Domain.Entities;
-using Posts.Features.Abstractions;
-using Posts.Features.Shared.Events;
+using Posts.Features.Persistence;
 namespace Posts.Infrastructure.Database;
 
 public class PostsDbContext(DbContextOptions<PostsDbContext> options)
