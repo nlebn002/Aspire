@@ -1,10 +1,10 @@
-﻿using Common.Filters;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Posts.Features.Abstractions;
+using Shared.Api.Abstractions;
+using Shared.Api.Filters;
 
 namespace Posts.Api.Extensions;
 

@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 using Microsoft.AspNetCore.Http;
 
-namespace Common.Extensions.Errors;
+namespace Shared.Extensions.Errors;
 
 public static class ErrorOrHttpResults
 {

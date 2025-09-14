@@ -1,9 +1,10 @@
-using Common.ExceptionHandlers;
+using Posts.Api;
 using Posts.Api.Extensions;
 using Posts.Features;
 using Posts.Infrastructure;
 using Posts.Infrastructure.Seed;
 using Serilog;
+using Shared.Api.ExceptionHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,9 @@ builder.Services.AddPostsFeaturesServices(builder.Configuration, mediatrCfg =>
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+builder.Services.RegisterApiEndpointsFromAssemblyContaining(typeof(PostsApiAssemblyMarker));
+
 
 
 if (builder.Environment.IsDevelopment())

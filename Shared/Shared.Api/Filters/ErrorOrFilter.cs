@@ -1,10 +1,10 @@
-﻿using Common.Exceptions;
-using Common.Extensions.Errors;
-using ErrorOr;
+﻿using ErrorOr;
 using Microsoft.AspNetCore.Http;
+using Shared.Contracts.Exceptions;
+using Shared.Extensions.Errors;
 using System.Reflection;
 
-namespace Common.Filters;
+namespace Shared.Api.Filters;
 
 public class ErrorOrFilter : IEndpointFilter
 {

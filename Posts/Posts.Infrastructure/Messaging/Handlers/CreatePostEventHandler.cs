@@ -1,9 +1,9 @@
-﻿using Common.Contracts;
-using Common.Contracts.Posts;
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using MediatR;
 using Posts.Domain.Events;
 using Posts.Features.Shared;
+using Shared.Contracts;
+using Shared.Contracts.Posts;
 using System.Text.Json;
 
 namespace Posts.Infrastructure.Messaging.Handlers;

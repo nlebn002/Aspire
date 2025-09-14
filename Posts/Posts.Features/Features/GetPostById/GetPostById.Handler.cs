@@ -1,15 +1,25 @@
 ﻿using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 using Posts.Features.Abstractions;
-using Posts.Features.Shared.Dtos;
 using Posts.Features.Shared.Errors;
+using Shared.Contracts.Posts;
 
 namespace Posts.Features.Features.GetPostById;
-
-internal class GetPostByIdHandler(IPostsDbContext db, HybridCache cache) : IRequestHandler<GetPostByIdQuery, ErrorOr<PostDto>>
+public record GetPostByIdQuery(Guid Id) : IRequest<ErrorOr<PostDto>>;
+public class GetPostByIdHandler(IPostsDbContext db, HybridCache cache) : IRequestHandler<GetPostByIdQuery, ErrorOr<PostDto>>
 {
+    public static async Task<ErrorOr<PostDto>> HandleAsync(
+        [FromRoute] string postId,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var post = await mediator.Send(new GetPostByIdQuery(Guid.Parse(postId)), cancellationToken);
+        return post;
+    }
+
     public async Task<ErrorOr<PostDto>> Handle(GetPostByIdQuery request, CancellationToken ct)
     {
         var response = await cache.GetOrCreateAsync(

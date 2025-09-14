@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing;
 
-namespace Posts.Features.Abstractions;
+namespace Shared.Api.Abstractions;
 
 public interface IApiEndpoint
 {

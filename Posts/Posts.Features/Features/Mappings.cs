@@ -1,5 +1,5 @@
 ﻿using Posts.Domain.Entities;
-using Posts.Features.Shared.Dtos;
+using Shared.Contracts.Posts;
 
 namespace Posts.Features.Features;
 

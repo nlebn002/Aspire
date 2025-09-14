@@ -1,4 +1,4 @@
-﻿namespace Common.Contracts;
+﻿namespace Shared.Contracts;
 
 public static class IntegrationTopics
 {
