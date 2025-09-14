@@ -1,0 +1,11 @@
+<Project>
+  <ItemDefinitionGroup>
+    <PackageReference>
+      <!-- Default: hide all package dependencies from higher layers -->
+      <!-- <PrivateAssets>all</PrivateAssets> -->
+      
+      <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+      <Nullable>enable</Nullable>
+    </PackageReference>
+  </ItemDefinitionGroup>
+</Project>

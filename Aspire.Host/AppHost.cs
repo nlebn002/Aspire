@@ -22,6 +22,7 @@ var postsDb = postgres.AddDatabase("postsDb");
 
 var redisPass = builder.AddParameter("redisPassword", "admin"); ;
 var redis = builder.AddRedis("redis", 6379, redisPass)
+    .WithRedisInsight(cfg => cfg.WithHostPort(6380))
     .WithDataBindMount("../data/redis");
 
 var seq = builder.AddSeq("seq", 5341)
@@ -29,10 +30,7 @@ var seq = builder.AddSeq("seq", 5341)
 
 
 var kafka = builder.AddKafka("kafka", 9092)
-    .WithKafkaUI(cfg =>
-    {
-        cfg.WithHostPort(56353);
-    })
+    .WithKafkaUI(cfg => cfg.WithHostPort(9093))
     .WithDataBindMount("../data/kafka");
 
 //OpenTelementry --> Jaeger (distributed tracing), Grafana + Prometheus (metrics + dashboard), Seq (structured logging)
