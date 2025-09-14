@@ -7,14 +7,14 @@ using Posts.Infrastructure.Database;
 
 namespace Posts.Infrastructure;
 
-public static class DependencyInjection
+public static class PostInfrastructureDependencyInjection
 {
     public static IServiceCollection AddPostsInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var postgresConnectionString = configuration.GetConnectionString("postsDb");
         services.AddDbContext<PostsDbContext>(x => x.UseNpgsql(postgresConnectionString));
-        services.AddScoped<IPostsDbContext, PostsDbContext>();
-        services.AddScoped<IUnitOfWork, EFUnitOfWork>();
+        services.AddScoped<IPostsDbContext>(x => x.GetRequiredService<PostsDbContext>());
+        services.AddScoped<IPostsUnitOfWork, PostsUnitOfWork>();
 
         services.AddHybridCache(o =>
         {
@@ -24,7 +24,6 @@ public static class DependencyInjection
                 Expiration = TimeSpan.FromMinutes(5),
             };
         });
-
 
         services.AddStackExchangeRedisCache(options =>
         {
@@ -40,4 +39,5 @@ public static class DependencyInjection
 
         return services;
     }
+
 }

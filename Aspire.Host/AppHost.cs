@@ -29,7 +29,10 @@ var seq = builder.AddSeq("seq", 5341)
 
 
 var kafka = builder.AddKafka("kafka", 9092)
-    .WithKafkaUI()
+    .WithKafkaUI(cfg =>
+    {
+        cfg.WithHostPort(56353);
+    })
     .WithDataBindMount("../data/kafka");
 
 //OpenTelementry --> Jaeger (distributed tracing), Grafana + Prometheus (metrics + dashboard), Seq (structured logging)

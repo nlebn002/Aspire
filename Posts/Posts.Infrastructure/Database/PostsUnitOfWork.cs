@@ -8,9 +8,14 @@ namespace Posts.Infrastructure.Database;
 /// </summary>
 /// <param name="dbContext"></param>
 /// <param name="dispatcher"></param>
-public sealed class EFUnitOfWork(PostsDbContext dbContext, IDomainEventsDispatcher dispatcher) : IUnitOfWork
+public sealed class PostsUnitOfWork(PostsDbContext dbContext, IDomainEventsDispatcher dispatcher) : IPostsUnitOfWork
 {
     public async Task<int> SaveChangesAsync(CancellationToken ct = default)
+    {
+        return await dbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task<int> SaveChangesWithRaisingEventsAsync(CancellationToken ct = default)
     {
         var result = await dbContext.SaveChangesAsync(ct);
         await dispatcher.DispatchEventsAsync(ct);

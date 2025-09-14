@@ -6,7 +6,7 @@ using Posts.Features.Shared.Dtos;
 
 namespace Posts.Features.Features.CreatePost;
 
-public class CreatePostHandler(IPostsDbContext context, IUnitOfWork uow) : IRequestHandler<CreatePostCommand, ErrorOr<PostDto>>
+public class CreatePostHandler(IPostsDbContext context, IPostsUnitOfWork uow) : IRequestHandler<CreatePostCommand, ErrorOr<PostDto>>
 {
     public async Task<ErrorOr<PostDto>> Handle(
         CreatePostCommand request,
@@ -14,7 +14,7 @@ public class CreatePostHandler(IPostsDbContext context, IUnitOfWork uow) : IRequ
     {
         var post = Post.Create(request.Title, request.Content);
         context.Posts.Add(post);
-        await uow.SaveChangesAsync(cancellationToken);
+        await uow.SaveChangesWithRaisingEventsAsync(cancellationToken);
 
         return post.ToDto();
     }

@@ -13,8 +13,17 @@ builder.Host.UseSerilog((context, loggerConfig) =>
     loggerConfig.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddOpenApi();
+
 builder.Services.AddPostsInfrastructure(builder.Configuration);
-builder.Services.AddPostsServices(builder.Configuration);
+builder.Services.AddPostsFeaturesServices(builder.Configuration, mediatrCfg =>
+{
+    mediatrCfg.RegisterServicesFromAssemblies(
+        [
+            typeof(PostsFeaturesAssemblyMarker).Assembly,
+            typeof(PostsInfrastructureAssemblyMarker).Assembly
+        ]);
+});
+
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 

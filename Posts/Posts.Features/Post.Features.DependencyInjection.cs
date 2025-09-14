@@ -9,19 +9,19 @@ using Posts.Features.Shared.Events;
 
 namespace Posts.Features;
 
-public static class DependencyInjection
+public static class PostFeaturesDependencyInjection
 {
-    public static IServiceCollection AddPostsServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPostsFeaturesServices(this IServiceCollection services, 
+        IConfiguration configuration, 
+        Action<MediatRServiceConfiguration> configure)
     {
         // Register all IApiEndpoint implementations from this assembly
-        services.RegisterApiEndpointsFromAssemblyContaining(typeof(DependencyInjection));
-        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection)));
+        services.RegisterApiEndpointsFromAssemblyContaining(typeof(PostsFeaturesAssemblyMarker));
+        services.AddValidatorsFromAssembly(typeof(PostFeaturesDependencyInjection).Assembly);
+        services.AddMediatR(configure);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-
         services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
-
         return services;
     }
 }
